@@ -4,11 +4,13 @@ var gameData = {
     faces: [":)",";)", ":D", ";D", ":P", ";P", "XD", "x)", "owo", "OwO", "oWo"],
     faceIndex: 0,
     autoEmote: 0,
-    version: 2,
+    version: 3,
     doubleUpgradeCost: 100,
     gens: ["cat", "duck"],
     genCount: [0,0],
-    genUpgradeCost: [100, 500]
+    genUpgradeCost: [100, 500],
+    unlockCount: 0,
+    unlockList:["upgrades", "auto"]
   }
 var startData = gameData
 
@@ -84,8 +86,10 @@ var savegame = JSON.parse(localStorage.getItem("asciiClickerSave"))
         console.log("in else")
         gameData = savegame
     }
-    gameData = savegame
+    //gameData = savegame
+    hide()
     loadElements()
+    unlockUpTo(gameData.unlockCount)
   }
 function loadElements(){
   document.getElementById("emotesPerClick").innerHTML = "Emotes Per Click: " + gameData.emotesPerClick
@@ -107,4 +111,34 @@ function endIt(){
   console.log("ending it")
   gameData = startData
   savegame = null
+  hide()
+}
+
+var unlockLoop = window.setInterval(function() {
+  console.log("checking unlocks")
+  if(gameData.emotes >= 50){
+    document.getElementById("upgrades").style.display = "block";
+    console.log("unlocked upgrades")
+    if(gameData.unlockCount < 1){
+      gameData.unlockCount = gameData.unlockCount + 1
+    }
+  }
+  if(gameData.emotes >= 250){
+    document.getElementById("space2").style.display = "block";
+    document.getElementById("auto").style.display = "block";
+    if(gameData.unlockCount < 2){
+      gameData.unlockCount = gameData.unlockCount + 1
+    }
+  }
+}, 1000)
+
+function hide(){
+  document.getElementById("upgrades").style.display = "none";
+  document.getElementById("auto").style.display = "none";
+  document.getElementById("space2").style.display = "none";
+}
+function unlockUpTo(unlocks){
+  for(let i = 0; i < unlocks; i++){
+    document.getElementById(gameData.unlockList[i]).style.display = "block";
+  }
 }

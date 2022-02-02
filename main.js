@@ -10,6 +10,8 @@ var gameData = {
     genCount: [0,0],
     genUpgradeCost: [100, 500]
   }
+var startData = gameData
+
 function emote() {
     gameData.emotes += gameData.emotesPerClick
     document.getElementById("emotesAdded").innerHTML = gameData.emotes + " Emotes Emoted"
@@ -32,7 +34,7 @@ function catBuy() {
       gameData.autoEmote = gameData.autoEmote + 1
       gameData.genCount[0] += 1
       document.getElementById("catsOwned").innerHTML = "purchased: " + gameData.genCount[0]
-      gameData.genUpgradeCost[0] = gameData.genUpgradeCost[0] * 2
+      gameData.genUpgradeCost[0] = gameData.genUpgradeCost[0] * gameData.genUpgradeCost[0]
       document.getElementById("cat").innerHTML = "Cost " + gameData.genUpgradeCost[0] + " emotes"
       document.getElementById("emotesPerSecond").innerHTML = "emotes per second: " + gameData.autoEmote
   }
@@ -100,4 +102,9 @@ function loadElements(){
   console.log("load complete")
 
 
+}
+function endIt(){
+  console.log("ending it")
+  gameData = startData
+  savegame = null
 }
